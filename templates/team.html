@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="title"><div><h1>{{team.name}}</h1><p>{{team.bought}} players - {{'{:,}'.format(team.spend)}} points spent - {{'{:,}'.format(team.purse)}} remaining</p></div><a class="button secondary" href="/">Back to dashboard</a></section>
+<section class="panel"><table><tr><th>Player</th><th>Role</th><th>Price</th></tr>{% for p in roster %}<tr><td>{{p.player_code}} - {{p.name}}</td><td>{{p.role}}</td><td>{{'{:,}'.format(p.sold_price)}}</td></tr>{% else %}<tr><td colspan="3">No players bought yet.</td></tr>{% endfor %}</table>{% if pager.pages > 1 %}<nav class="pagination">{% if pager.previous %}<a href="{{url_for('team', team_id=team.id, page=pager.previous)}}">Previous</a>{% endif %}<span>Page {{pager.page}} of {{pager.pages}} ({{pager.total}} players)</span>{% if pager.next %}<a href="{{url_for('team', team_id=team.id, page=pager.next)}}">Next</a>{% endif %}</nav>{% endif %}</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auction-layout">
+  <div class="auction-main">
+    <section class="title"><div><h1>Live auction entry</h1><p>Find a player, select the winner, and save.</p></div></section>
+    <form class="auction-search" method="get"><input name="q" value="{{query}}" autofocus placeholder="Player ID or name"><button>Find player</button></form>
+    {% if query and not player %}<div class="flash error">No player matched "{{query}}". Add them on the Players page.</div>{% endif %}
+    {% if player %}<section class="panel sale"><div><span class="tag {{player.status|lower}}">{{player.status}}</span>{% if player.priority %}<span class="tag favourite">Favourite - {{player.priority}}</span>{% endif %}<h2>{{player.player_code}} - {{player.name}}</h2><p>{{player.role}}</p></div>{% if player.status=='Available' %}<form method="post"><input type="hidden" name="player_id" value="{{player.id}}"><label>Winning team<select name="team_id" required><option value="">Select team</option>{% for t in teams %}<option value="{{t.id}}">{{t.name}} - {{'{:,}'.format(t.purse)}} pts - {{t.bought}}/13</option>{% endfor %}</select></label><label>Winning price<input name="price" type="number" min="1" placeholder="Points"></label><div class="actions"><button name="action" value="sold">Save sale</button><button class="secondary" name="action" value="unsold">Mark unsold</button></div></form>{% else %}<p>This player is {{player.status|lower}}{% if player.sold_price %} for {{'{:,}'.format(player.sold_price)}} points{% endif %}.</p>{% endif %}</section>{% endif %}
+  </div>
+  <aside class="auction-strategy-panel">
+    <div class="auction-team-heading"><img src="{{url_for('static', filename='demo-shield.svg')}}" alt="Demo United logo"><div><span>MY TEAM LIVE VIEW</span><h2>DEMO UNITED</h2></div></div>
+    <div class="auction-budget-grid"><div><span>Current purse</span><strong>{{'{:,}'.format(my_team.purse)}}</strong></div><div><span>Total spend</span><strong>{{'{:,}'.format(my_team.spend)}}</strong></div><div><span>Slots left</span><strong>{{13-my_team.bought}}</strong></div><div class="max-cap"><span>Max cap spend</span><strong>{{'{:,}'.format(my_team.purse)}}</strong></div></div>
+    <div class="auction-favourites-heading"><div><span>WATCHLIST</span><h3>My favourites</h3></div><b>{{favourites|length}}</b></div>
+    <div class="auction-favourites-list">{% for fav in favourites %}<article class="auction-favourite {{fav.status|lower}}"><div class="fav-top"><div><span class="fav-code">{{fav.player_code}}</span><strong>{{fav.name}}</strong></div><span class="tag favourite">{{fav.priority}}</span></div><p>{{fav.role}} <span class="tag {{fav.status|lower}}">{{fav.status}}</span></p><div class="fav-prices"><span>Expected <b>{{'{:,}'.format(fav.expected_price) if fav.expected_price else '-'}}</b></span><span>Max <b>{{'{:,}'.format(fav.maximum_price) if fav.maximum_price else '-'}}</b></span></div>{% if fav.notes %}<small>{{fav.notes}}</small>{% endif %}</article>{% else %}<div class="auction-empty"><strong>No favourites yet</strong><span>Open a player’s Strategy page to add them here.</span></div>{% endfor %}</div>
+  </aside>
+</section>
+{% endblock %}

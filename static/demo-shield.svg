@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" role="img" aria-label="Football Auction Control Center demo logo">
+  <path fill="#111827" stroke="#d7a92a" stroke-width="8" d="M80 6 148 30v58c0 43-28 69-68 86C40 157 12 131 12 88V30z"/>
+  <circle cx="80" cy="79" r="38" fill="#d7a92a"/>
+  <path fill="#111827" d="m80 48 11 22 25 4-18 18 4 25-22-12-22 12 4-25-18-18 25-4z"/>
+  <text x="80" y="142" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">DEMO</text>
+</svg>
