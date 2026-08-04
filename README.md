@@ -23,3 +23,5 @@ I created this tool after buying a team for a football auction. I needed one pla
 ## Use it and improve it
 
 This project was created for a small, niche idea, but if you end up here and it helps with your own auction, feel free to use it and customize it for your needs. You are also welcome to share an idea or feature request so it can be considered for a future update.
+
+## Vibe Coding Project
