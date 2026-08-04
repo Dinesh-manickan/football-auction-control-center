@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="title"><div><h1>My team strategy</h1><p>Favourite players and spending limits.</p></div><a class="button secondary" href="/players">Add favourite</a></section>
+<section class="panel"><table><tr><th>Player</th><th>Role</th><th>Priority</th><th>Expected</th><th>Maximum</th><th>Status</th><th></th></tr>{% for f in favourites %}<tr><td>{{f.player_code}} - {{f.name}}</td><td>{{f.role}}</td><td>{{f.priority}}</td><td>{{f.expected_price or '-'}}</td><td>{{f.maximum_price or '-'}}</td><td>{{f.status}}</td><td><a href="/favourites/{{f.player_id}}">Edit</a></td></tr>{% else %}<tr><td colspan="7">No favourites selected. Choose Strategy beside a player.</td></tr>{% endfor %}</table>{% if pager.pages > 1 %}<nav class="pagination">{% if pager.previous %}<a href="{{url_for('favourites', page=pager.previous)}}">Previous</a>{% endif %}<span>Page {{pager.page}} of {{pager.pages}} ({{pager.total}} favourites)</span>{% if pager.next %}<a href="{{url_for('favourites', page=pager.next)}}">Next</a>{% endif %}</nav>{% endif %}</section>
+{% endblock %}

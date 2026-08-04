@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+{% set summary,teams,mine,favs,recent=data %}
+<section class="title"><div><h1>Auction reports</h1><p>{{summary.sold or 0}} sold - {{summary.unsold or 0}} unsold - {{'{:,}'.format(summary.total_spend)}} total spend</p></div></section>
+{% for t in teams %}<section class="panel report"><h2>{{t.name}}</h2><p>{{t.bought}} players - {{'{:,}'.format(t.spend)}} spent - {{'{:,}'.format(t.purse)}} purse - Average {{'{:,.0f}'.format(t.spend/t.bought if t.bought else 0)}}</p><p>{% for p in rosters[t.id] %}{{p.name}} ({{p.role}}, {{'{:,}'.format(p.sold_price)}}){% if not loop.last %} - {% endif %}{% else %}No purchases{% endfor %}</p></section>{% endfor %}
+{% if pager.pages > 1 %}<nav class="pagination">{% if pager.previous %}<a href="{{url_for('reports', page=pager.previous)}}">Previous</a>{% endif %}<span>Page {{pager.page}} of {{pager.pages}} ({{pager.total}} teams)</span>{% if pager.next %}<a href="{{url_for('reports', page=pager.next)}}">Next</a>{% endif %}</nav>{% endif %}
+{% endblock %}

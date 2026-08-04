@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+{% set team,bought,manual,favourites,candidates,slots=data %}
+<section class="my-team-hero"><div><span class="eyebrow">DEMO UNITED SQUAD</span><h1>My Team</h1><p>Build your 9-a-side match squad from auction purchases and private team players.</p></div><img src="{{url_for('static', filename='demo-shield.svg')}}" alt="Demo United logo"></section>
+<section class="my-team-stats"><div><span>Auction players bought</span><b>{{bought|length}}</b></div><div><span>Manual team players</span><b>{{manual|length}}</b></div><div><span>Favourites tracked</span><b>{{favourites|length}}</b></div><div><span>Formation places</span><b>13</b></div></section>
+<section class="my-team-layout">
+  <section class="formation-section"><header class="formation-header"><div><span class="eyebrow">MATCH DAY BOARD</span><h2>9-a-side formation</h2><p>1 GK - 3 DF - 4 MID - 1 STR, plus 4 substitutes.</p></div><div class="formation-key"><span><i class="player-icon gk">&#129958;</i> Goalkeeper</span><span><i class="player-icon">&#9917;</i> Outfield player</span></div></header>
+    <div class="pitch">
+      {% for slot in slots if slot.slot_code=='st' %}{% include 'formation_slot.html' %}{% endfor %}
+      <div class="pitch-row mids">{% for slot in slots if slot.slot_type=='MID' %}{% include 'formation_slot.html' %}{% endfor %}</div>
+      <div class="pitch-row defenders">{% for slot in slots if slot.slot_type=='DF' %}{% include 'formation_slot.html' %}{% endfor %}</div>
+      {% for slot in slots if slot.slot_code=='gk' %}{% include 'formation_slot.html' %}{% endfor %}
+    </div>
+    <div class="subs-bench"><h3>Substitutes</h3><div>{% for slot in slots if slot.slot_type=='SUB' %}{% include 'formation_slot.html' %}{% endfor %}</div></div>
+  </section>
+  <aside class="team-management"><form class="manual-player-form" method="post"><input type="hidden" name="action" value="add_manual"><span class="card-kicker">PRIVATE TEAM PLAYER</span><h2>Add non-auction player</h2><p>This player stays separate from the auction and can be used in your formation.</p><label>Name<input name="name" required placeholder="Player name"></label><label>Preferred role<select name="role"><option>Goalkeeper</option><option>Defender</option><option>Midfielder</option><option>Striker</option><option>Substitute</option></select></label><label>Notes<textarea name="notes" placeholder="Optional note"></textarea></label><button>Add to my team</button></form>
+    <section class="team-list-card"><h2>Bought players <small>{{bought|length}}</small></h2>{% for player in bought %}<div><span class="player-icon">&#9917;</span><p><b>{{player.name}}</b><small>{{player.role}} - {{'{:,}'.format(player.sold_price)}} pts</small></p></div>{% else %}<p class="muted">No auction players bought yet.</p>{% endfor %}</section>
+    <section class="team-list-card"><h2>Favourites <small>{{favourites|length}}</small></h2>{% for player in favourites %}<div><span class="tag favourite">{{player.priority}}</span><p><b>{{player.name}}</b><small>{{player.role}} - max {{'{:,}'.format(player.maximum_price) if player.maximum_price else '-'}}</small></p></div>{% else %}<p class="muted">No favourites saved yet.</p>{% endfor %}</section>
+  </aside>
+</section>
+{% endblock %}
